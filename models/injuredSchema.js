@@ -5,22 +5,21 @@ var schema = mongoose.Schema,
 
     injuredSchema = new schema({
         id: {type:Number, required:true},
-        // QrId: { type: schema.Types.ObjectId, ref: 'QrCode' },
-        // eventId:  { type: schema.Types.ObjectId, ref: 'Events' },
-        // name:String,
-        // Location: Number,
-        // addBy: { type: schema.Types.ObjectId, ref: 'User' },
-        // ModifyBy: { type: schema.Types.ObjectId, ref: 'User' },
-        airWay: Boolean
-        // Breathing: Boolean,
-        // Circulation: Number,
-        // Disability: String,
-        // Evacuation: String,
-        // ToHospital: String,
-        // TandT: Boolean,
-        // date: Date,
-        // time: { type : Date, default: Date.now },
-        // severity: String
+        name:String,
+        location: [Number],
+        airWay: Boolean,
+        breathing: Boolean,
+        circulation: String,
+        disability: String,
+        exposure: String,
+        toHospital: String,
+        TandT: Boolean,
+        time: { type : Date, default: Date.now },
+        severity: String,
+        addBy: Number,
+        ModifyBy: Number,
+        QrId: Number,
+        eventId:Number
     }, {collection: 'Injured'});
 
 var Injured = mongoose.model('Injured', injuredSchema);

@@ -73,7 +73,17 @@ const express = require('express'),
         console.log(error);
         next();
     })
-})
+  })
+
+ app.post('/addNewEvent/', (req, res, next) => {
+    data.addNewEvent(
+        req.body.EventDetails).then((result) => {
+        result.length === 0 ? next() : res.status(200).json(result);
+        }, (error) => {
+        console.log(error);
+        next();
+        })
+  })
 
     app.get('*', function(req,res){
       res.send('Got Lost? This is Friendly 404 Page ;) ');

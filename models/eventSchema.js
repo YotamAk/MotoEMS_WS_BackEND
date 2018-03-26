@@ -4,12 +4,12 @@ var schema = mongoose.Schema,
 
     
     EventSchema = new schema({
-        Id: {type:Number, required:true},
+        id: {type:Number, required:true},
         description: String,
-       // createBy: {type: Schema.Types.ObjectId, ref: 'User' },
+        createByUserID: Number,
         time: { type : Date, default: Date.now },
-        location: Number
-    }, {collection: 'Events'});
+        location: [Number]
+    }, {collection: 'EMSevent'});
 
 var EMSevent = mongoose.model('EMSevent', EventSchema);
 
