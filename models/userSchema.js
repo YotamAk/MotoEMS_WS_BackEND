@@ -12,7 +12,7 @@ var schema = mongoose.Schema,
         corpId: Number,
         phone: Number,
         location: Number
-    }, {collection: 'User'});
+    }, {collection: 'Users'});
 
 var User = mongoose.model('User', UserSchema);
 

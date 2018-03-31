@@ -4,7 +4,9 @@ var schema = mongoose.Schema,
 
 incrementSchema = new schema({
         injured_id: Number,
-        EMSevent_id: Number
+        EMSevent_id: Number,
+        user_id: Number,
+        hospital_id: Number
     }, {collection: 'increment'})
 
 var Increment = mongoose.model('increment', incrementSchema);

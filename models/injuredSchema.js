@@ -15,11 +15,16 @@ var schema = mongoose.Schema,
         toHospital: String,
         TandT: Boolean,
         time: { type : Date, default: Date.now },
-        severity: String,
+        severity:{ 
+            type: String,
+            enum: ['dead', 'critical','urgent-stable','urgent','not-urgent','OK']
+        },
+        // severity: String,
         addBy: Number,
         ModifyBy: Number,
         QrId: Number,
-        eventId:Number
+        eventId:Number,
+        heartbeat:     { type: Number, min: 30, max: 200 }
     }, {collection: 'Injured'});
 
 var Injured = mongoose.model('Injured', injuredSchema);
