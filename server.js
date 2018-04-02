@@ -13,7 +13,7 @@ const express = require('express'),
   app.use(bodyParser.urlencoded({extended : true}));
   app.use(function (req, res, next) {
       // Website you wish to allow to connect
-      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+      res.setHeader('Access-Control-Allow-Origin', '*');
       // Request methods you wish to allow
       res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
       // Request headers you wish to allow
@@ -40,6 +40,7 @@ const express = require('express'),
  app.get('/getInjuredById/:id', (req,res,next) => {
     data.getInjuredById(req.params.id).then((result) => {
         res.status(200).send(result);    
+	console.log("Get injured by id : " + req.params.id);
     }, (error) => {
         console.log(error);
         next();
@@ -49,6 +50,7 @@ const express = require('express'),
  app.get('/getEventById/:id', (req,res,next) => {
     data.getEventById(req.params.id).then((result) => {
         res.status(200).send(result);    
+	console.log("Get  Event By Id : " , req.params.id );
     }, (error) => {
         console.log(error);
         next();
@@ -57,7 +59,8 @@ const express = require('express'),
 
  app.get('/getInjuredsSeverity/:severity', (req,res,next) => {
     data.getInjuredsSeverity(req.params.severity).then((result) => {
-        res.status(200).send(result);    
+        res.status(200).send(result);
+	console.log("Get Injured By Severity : " + req.params.severity );    
     }, (error) => {
         console.log(error);
         next();
@@ -69,6 +72,7 @@ const express = require('express'),
     data.addNewInjured(
         req.body.injuredDetails).then((result) => {
         result.length === 0 ? next() : res.status(200).json(result);
+	console.log("Add New Injured : "+result)
     }, (error) => {
         console.log(error);
         next();
@@ -89,6 +93,7 @@ const express = require('express'),
     data.addNewUser(
         req.body.UserDetails).then((result) => {
         result.length === 0 ? next() : res.status(200).json(result);
+	console.log("Add New User : " + result);
         }, (error) => {
         console.log(error);
         next();
@@ -100,6 +105,7 @@ const express = require('express'),
     data.addNewHospital(
         req.body.HospitalDetails).then((result) => {
         result.length === 0 ? next() : res.status(200).json(result);
+	console.log("Add new hospital : " +  result );
         }, (error) => {
         console.log(error);
         next();
@@ -108,7 +114,7 @@ const express = require('express'),
 
     app.get('*', function(req,res){
       res.send('Got Lost? This is Friendly 404 Page ;) ');
-      console.log(' 404 Get Lost ');
+    //  console.log(' 404 Get Lost ');
     });
 
         app.listen(port);

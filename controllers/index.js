@@ -2,7 +2,7 @@
 const   mongoose = require('mongoose'),
         Injured   = require('./../models/injuredSchema'),
         EMSevent   = require('./../models/eventSchema'),
-        User   = require('./../models/UserSchema'),
+        User   = require('./../models/userSchema'),
         Increment = require('./../models/increment'),
         Hospital = require('./../models/hospitalSchema');
 
