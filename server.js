@@ -39,7 +39,7 @@ const express = require('express'),
 
  app.get('/getInjuredById/:id', (req,res,next) => {
     data.getInjuredById(req.params.id).then((result) => {
-        res.status(200).send(result);    
+        res.status(200).json(result);    
 	console.log("Get injured by id : " + req.params.id);
     }, (error) => {
         console.log(error);
@@ -49,7 +49,7 @@ const express = require('express'),
 
  app.get('/getEventById/:id', (req,res,next) => {
     data.getEventById(req.params.id).then((result) => {
-        res.status(200).send(result);    
+        res.status(200).json(result);    
 	console.log("Get  Event By Id : " , req.params.id );
     }, (error) => {
         console.log(error);
@@ -59,8 +59,19 @@ const express = require('express'),
 
  app.get('/getInjuredsSeverity/:severity', (req,res,next) => {
     data.getInjuredsSeverity(req.params.severity).then((result) => {
-        res.status(200).send(result);
+        res.status(200).json(result);
 	console.log("Get Injured By Severity : " + req.params.severity );    
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+  })
+
+
+ app.get('/getInjuredsByEvent/:eventId', (req,res,next) => {
+    data.getInjuredsByEvent(req.params.eventId).then((result) => {
+        res.status(200).json(result);
+  console.log("Get Injureds By eventId : " + req.params.eventId );    
     }, (error) => {
         console.log(error);
         next();

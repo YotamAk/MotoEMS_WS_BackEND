@@ -198,6 +198,16 @@ class Event {
         });
     };
 
+    getInjuredsByEvent(eventId) {
+        return new Promise((resolve, reject) => {
+            Injured.find({eventId: eventId},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                });
+        });
+    };
+
 }
 module.exports = () => {
     var event = new Event();
