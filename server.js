@@ -57,6 +57,61 @@ const express = require('express'),
     })
   })
 
+ app.get('/getUserById/:id', (req,res,next) => {
+    data.getUserById(req.params.id).then((result) => {
+        res.status(200).json(result);    
+  console.log("Get  User By Id : " , req.params.id );
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+  })
+
+ app.get('/notHospitalInjureds/', (req,res,next) => {
+    data.notHospitalInjureds().then((result) => {
+        res.status(200).json(result);    
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+  })
+
+ app.get('/getAllActiveUsers/', (req,res,next) => {
+    data.getAllActiveUsers().then((result) => {
+        res.status(200).json(result);    
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+  })
+
+ app.get('/getInActiveUsers/', (req,res,next) => {
+    data.getInActiveUsers().then((result) => {
+        res.status(200).json(result);    
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+  })
+
+ app.get('/getAllActiveEvents/', (req,res,next) => {
+    data.getAllActiveEvents().then((result) => {
+        res.status(200).json(result);    
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+  })
+
+ app.get('/login/:name/:password', (req,res,next) => {
+    data.login(req.params.name,req.params.password).then((result) => {
+        res.status(200).json(result);  
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+  })
+
  app.get('/getInjuredsSeverity/:severity', (req,res,next) => {
     data.getInjuredsSeverity(req.params.severity).then((result) => {
         res.status(200).json(result);
@@ -77,6 +132,42 @@ const express = require('express'),
         next();
     })
   })
+
+ app.get('/getAllUsers/', (req,res,next) => {
+    data.getAllUsers().then((result) => {
+        res.status(200).send(result);    
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+})
+
+ app.get('/getAllEvents/', (req,res,next) => {
+    data.getAllEvents().then((result) => {
+        res.status(200).send(result);    
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+})
+
+app.get('/getAllInjureds/', (req,res,next) => {
+    data.getAllInjureds().then((result) => {
+        res.status(200).send(result);    
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+})
+
+app.get('/getAllHospitals/', (req,res,next) => {
+    data.getAllHospitals().then((result) => {
+        res.status(200).send(result);    
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+})
 
 
  app.post('/addNewInjured/', (req, res, next) => {
@@ -127,6 +218,24 @@ const express = require('express'),
       res.send('Got Lost? This is Friendly 404 Page ;) ');
     //  console.log(' 404 Get Lost ');
     });
+
+    app.post('/SetInactiveUser/', (req, res, next) => {
+    data.SetInactiveUser(req.body.id).then((result) => {
+        result.length === 0 ? next() : res.status(200).json(result);
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+})
+
+    app.post('/SetActiveUser/', (req, res, next) => {
+    data.SetActiveUser(req.body.id).then((result) => {
+        result.length === 0 ? next() : res.status(200).json(result);
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+})
 
         app.listen(port);
        console.log('listening to port :  '+ port );

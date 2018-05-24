@@ -10,8 +10,10 @@ var schema = mongoose.Schema,
             enum: ['paramedic', 'medic','firstAid']
         },
         corpId: Number,
-        phone: Number,
-        location: Number
+        phone: String,
+        password :Number,
+        location: Number,
+        active: Boolean
     }, {collection: 'Users'});
 
 var User = mongoose.model('User', UserSchema);

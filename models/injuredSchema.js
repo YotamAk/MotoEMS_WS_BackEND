@@ -22,9 +22,10 @@ var schema = mongoose.Schema,
         // severity: String,
         addBy: Number,
         ModifyBy: Number,
-        QrId: Number,
+        QrId: String,
         eventId:Number,
-        heartbeat:     { type: Number, min: 30, max: 200 }
+        heartbeat:     { type: Number, min: 30, max: 200 },
+        InHospital: Boolean
     }, {collection: 'Injured'});
 
 var Injured = mongoose.model('Injured', injuredSchema);

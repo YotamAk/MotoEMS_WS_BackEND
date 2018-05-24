@@ -8,7 +8,8 @@ var schema = mongoose.Schema,
         description: String,
         createByUserID: Number,
         time: { type : Date, default: Date.now },
-        location: [Number]
+        location: [Number],
+        active: Boolean
     }, {collection: 'EMSevent'});
 
 var EMSevent = mongoose.model('EMSevent', EventSchema);

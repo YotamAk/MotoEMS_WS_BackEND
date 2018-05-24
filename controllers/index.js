@@ -23,6 +23,17 @@ class Event {
     }
 
 
+    login(name ,password) {
+        return new Promise((resolve, reject) => {
+            User.findOne({$and:[{name:name},{password:password}]},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                });
+        });
+    };
+
+
     checkSeverity(circulation, heartbeat,breathing){
         var severity = "OK";
         if((heartbeat> 130 || heartbeat< 50) && circulation === "high" ){
@@ -35,6 +46,41 @@ class Event {
     /**
      * The following methods are called by routes only from the server.js file
      */
+    getAllUsers() {
+        return new Promise((resolve, reject) => {
+            User.find({}, '-_id', (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            })
+        })    
+    }
+
+    getAllEvents() {
+        return new Promise((resolve, reject) => {
+            EMSevent.find({}, '-_id', (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            })
+        })    
+    }
+
+    getAllInjureds() {
+        return new Promise((resolve, reject) => {
+            Injured.find({}, '-_id', (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            })
+        })    
+    }
+
+    getAllHospitals() {
+        return new Promise((resolve, reject) => {
+            Hospital.find({}, '-_id', (err, result) => {
+                if (err) reject(err);
+                else resolve(result);
+            })
+        })    
+    }
 
     addNewInjured(injuredDetails) {
         var headers = JSON.parse(injuredDetails), //remove when sending from client side
@@ -66,7 +112,8 @@ class Event {
                     addBy: headers.addBy,
                     ModifyBy: headers.ModifyBy,
                     QrId: headers.QrId,
-                    eventId:headers.eventId
+                    eventId:headers.eventId,
+                    InHospital : false
                 });
 
                 newInjured.save(
@@ -96,7 +143,8 @@ class Event {
                     id: EMSevent_id,
                     description:headers.description,
                     createByUserID: headers.createByUserID,
-                    location: headers.location
+                    location: headers.location,
+                    active: true
                 });
 
                 newEvent.save(
@@ -109,9 +157,8 @@ class Event {
     }
 
     addNewUser(UserDetails) {
-        var headers = JSON.parse(UserDetails), //remove when sending from client side
+        var headers = UserDetails, //remove when sending from client side
             user_id = -1;
-
         return new Promise((resolve, reject) => {
             this.getIncrements().then((result) => {
                 user_id = result.user_id;
@@ -124,9 +171,11 @@ class Event {
                 let newUser = new User({
                     id: user_id,
                     name: headers.name,
+                    password : headers.password,
                     role: headers.role,
                     corpId:headers.corpId,
-                    phone: headers.phone
+                    phone: headers.phone,
+                    active:true
                 });
 
                 newUser.save(
@@ -176,6 +225,16 @@ class Event {
         });
     };
 
+    getUserById(id) {
+        return new Promise((resolve, reject) => {
+            User.findOne({id: id},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                });
+        });
+    };
+
 
     getEventById(id) {
         return new Promise((resolve, reject) => {
@@ -204,9 +263,70 @@ class Event {
                 (err, result) => {
                     if (err) reject (err);
                     else resolve (result);
+                    console.log(result);
                 });
         });
     };
+
+    SetInactiveUser(id) {                                    //user.active change to false
+        return new Promise((resolve, reject) => {
+                User.update({'id': id}, 
+                {$set:{"active": false}}, (err) => {
+                    if (err) reject (err);
+                });
+        })
+    }
+
+    SetActiveUser(id) {                                     //user.active change to true
+        return new Promise((resolve, reject) => {
+                User.update({'id': id}, 
+                {$set:{"active": true}}, (err) => {
+                    if (err) reject (err);
+                });
+        })
+    }
+
+    notHospitalInjureds() {
+        return new Promise((resolve, reject) => {
+            Injured.find({InHospital: false},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                });
+        });
+    };
+
+    getAllActiveUsers() {
+        return new Promise((resolve, reject) => {
+            User.find({active: true},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                });
+        });
+    };
+
+    getInActiveUsers() {
+        return new Promise((resolve, reject) => {
+            User.find({active: false},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                });
+        });
+    };
+
+    getAllActiveEvents() {
+        return new Promise((resolve, reject) => {
+            EMSevent.find({active: true},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                });
+        });
+    };
+
+
 
 }
 module.exports = () => {
