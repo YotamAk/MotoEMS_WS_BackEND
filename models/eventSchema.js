@@ -4,9 +4,9 @@ var schema = mongoose.Schema,
 
     
     EventSchema = new schema({
-        id: {type:Number, required:true},
+        id: {type:String, required:true},
         description: String,
-        createByUserID: Number,
+        createByUserID: String,
         time: { type : Date, default: Date.now },
         location: [Number],
         active: Boolean

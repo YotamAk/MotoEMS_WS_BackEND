@@ -67,6 +67,16 @@ const express = require('express'),
     })
   })
 
+ app.get('/getHospitalById/:id', (req,res,next) => {
+    data.getHospitalById(req.params.id).then((result) => {
+        res.status(200).json(result);    
+  console.log("Get  Hospital By Id : " , req.params.id );
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+  })
+
  app.get('/notHospitalInjureds/', (req,res,next) => {
     data.notHospitalInjureds().then((result) => {
         res.status(200).json(result);    
@@ -190,6 +200,37 @@ app.get('/getAllHospitals/', (req,res,next) => {
         next();
         })
   })
+  
+app.post('/editUser/', (req, res, next) => {
+    data.editUser(
+        req.body.UserDetails).then((result) => {
+        result.length === 0 ? next() : res.status(200).json(result);
+        }, (error) => {
+        console.log(error);
+        next();
+        })
+  })
+
+app.post('/editHospital/', (req, res, next) => {
+    data.editHospital(
+        req.body.HospitalDetails).then((result) => {
+        result.length === 0 ? next() : res.status(200).json(result);
+        }, (error) => {
+        console.log(error);
+        next();
+        })
+  })
+
+app.post('/editEvent/', (req, res, next) => {
+    data.editEvent(
+        req.body.EventDetails).then((result) => {
+        result.length === 0 ? next() : res.status(200).json(result);
+        }, (error) => {
+        console.log(error);
+        next();
+        })
+  })
+
 
   app.post('/addNewUser/', (req, res, next) => {
     data.addNewUser(

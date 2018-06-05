@@ -99,6 +99,7 @@ class Event {
                 let newInjured = new Injured({
                     id: injured_id,
                     name:headers.name,
+                    age:headers.age,
                     location: headers.location,
                     airWay: headers.airWay,
                     breathing: headers.breathing,
@@ -157,7 +158,7 @@ class Event {
     }
 
     addNewUser(UserDetails) {
-        var headers = UserDetails, //remove when sending from client side
+        var headers = UserDetails, 
             user_id = -1;
         return new Promise((resolve, reject) => {
             this.getIncrements().then((result) => {
@@ -188,7 +189,8 @@ class Event {
     }
 
     addNewHospital(HospitalDetails) {
-        var headers = JSON.parse(HospitalDetails), //remove when sending from client side
+        var headers = HospitalDetails,
+        // JSON.parse(HospitalDetails), //remove when sending from client side
             hospital_id = -1;
 
         return new Promise((resolve, reject) => {
@@ -203,6 +205,8 @@ class Event {
                 let newHospital = new Hospital({
                     id: hospital_id,
                     name: headers.name,
+                    password: headers.password,
+                    phone : headers.phone,
                     location: headers.location
                 });
 
@@ -235,8 +239,17 @@ class Event {
         });
     };
 
+    getHospitalById(id) {
+        return new Promise((resolve, reject) => {
+            Hospital.findOne({id: id},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                });
+        });
+    };
 
-    getEventById(id) {
+getEventById(id) {
         return new Promise((resolve, reject) => {
             EMSevent.findOne({id: id},
                 (err, result) => {
@@ -281,6 +294,47 @@ class Event {
         return new Promise((resolve, reject) => {
                 User.update({'id': id}, 
                 {$set:{"active": true}}, (err) => {
+                    if (err) reject (err);
+                });
+        })
+    }
+
+    editUser(UserDetails) { 
+    var headers = UserDetails;                               
+        return new Promise((resolve, reject) => {
+                User.update({'id': headers.id}, 
+                {$set:{"name": headers.name,
+                    "password" : headers.password,
+                    "role": headers.role,
+                    "corpId":headers.corpId,
+                    "phone": headers.phone }}, (err) => {
+                    if (err) reject (err);
+                });
+        })
+    }
+
+    editHospital(HospitalDetails) { 
+    var headers = HospitalDetails;                               
+        return new Promise((resolve, reject) => {
+                Hospital.update({'id': headers.id}, 
+                {$set:{"name": headers.name,
+                    "password" : headers.password,
+                    "location":headers.location,
+                    "phone": headers.phone }}, (err) => {
+                    if (err) reject (err);
+                });
+        })
+    }
+
+    editEvent(EventDetails) { 
+    var headers = EventDetails;                               
+        return new Promise((resolve, reject) => {
+                EMSevent.update({'id': headers.id}, 
+                {$set:{"description": headers.description,
+                    "createByUserID" : headers.createByUserID,
+                    "location":headers.location,
+                    "time": headers.time,
+                    "active": headers.active }}, (err) => {
                     if (err) reject (err);
                 });
         })
