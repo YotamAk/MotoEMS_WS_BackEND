@@ -47,6 +47,16 @@ const express = require('express'),
     })
   })
 
+ app.get('/getInjuredByQR/:QrId', (req,res,next) => {
+    data.getInjuredByQR(req.params.QrId).then((result) => {
+        res.status(200).json(result);    
+  console.log("Get injured by QR : " + req.params.id);
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+  })
+
  app.get('/getEventById/:id', (req,res,next) => {
     data.getEventById(req.params.id).then((result) => {
         res.status(200).json(result);    

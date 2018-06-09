@@ -229,6 +229,16 @@ class Event {
         });
     };
 
+    getInjuredByQR(QrId) {
+        return new Promise((resolve, reject) => {
+            Injured.findOne({QrId: QrId},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                });
+        });
+    };
+
     getUserById(id) {
         return new Promise((resolve, reject) => {
             User.findOne({id: id},
