@@ -132,6 +132,15 @@ const express = require('express'),
     })
   })
 
+ app.get('/activeInjuredsByHospital/:toHospital', (req,res,next) => {
+    data.activeInjuredsByHospital(req.params.toHospital).then((result) => {
+        res.status(200).json(result);  
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+  })
+
  app.get('/getInjuredsSeverity/:severity', (req,res,next) => {
     data.getInjuredsSeverity(req.params.severity).then((result) => {
         res.status(200).json(result);
@@ -240,7 +249,26 @@ app.post('/editEvent/', (req, res, next) => {
         next();
         })
   })
+  
+  app.post('/editInjured/', (req, res, next) => {
+    data.editInjured(
+        req.body.InjuredDetails).then((result) => {
+        result.length === 0 ? next() : res.status(200).json(result);
+        }, (error) => {
+        console.log(error);
+        next();
+        })
+  })
 
+  app.post('/editMedicalDetails/', (req, res, next) => {
+    data.editMedicalDetails(
+        req.body.InjuredDetails).then((result) => {
+        result.length === 0 ? next() : res.status(200).json(result);
+        }, (error) => {
+        console.log(error);
+        next();
+        })
+  })
 
   app.post('/addNewUser/', (req, res, next) => {
     data.addNewUser(
@@ -281,6 +309,15 @@ app.post('/editEvent/', (req, res, next) => {
 
     app.post('/SetActiveUser/', (req, res, next) => {
     data.SetActiveUser(req.body.id).then((result) => {
+        result.length === 0 ? next() : res.status(200).json(result);
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+})
+
+    app.post('/hospitalGetInjured/', (req, res, next) => {
+    data.hospitalGetInjured(req.body.id).then((result) => {
         result.length === 0 ? next() : res.status(200).json(result);
     }, (error) => {
         console.log(error);

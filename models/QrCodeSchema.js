@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var schema = mongoose.Schema,
     
     QrCodeSchema = new schema({
-        id: {type:Number, required:true},
+        id: {type:String, required:true},
         qrCode: Number,
         injuredId: Number;
     }, {collection: 'QrCode'});

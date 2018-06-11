@@ -33,10 +33,20 @@ class Event {
         });
     };
 
+    activeInjuredsByHospital(toHospital) {
+        return new Promise((resolve, reject) => {
+            Injured.find({$and:[{InHospital:false},{toHospital:toHospital}]},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                });
+        });
+    };
 
-    checkSeverity(circulation, heartbeat,breathing){
+
+    checkSeverity(blood_pressure, heartbeat,breathing){
         var severity = "OK";
-        if((heartbeat> 130 || heartbeat< 50) && circulation === "high" ){
+        if((heartbeat> 130 || heartbeat< 50) && blood_pressure === "high" ){
             severity ="urgent-stable"; 
         }
         return severity;
@@ -94,16 +104,17 @@ class Event {
                  Increment.update({$inc:{'injured_id': 1}}, (err) =>{
                     if (err) console.log(err)
                  });  
-                severityResult = this.checkSeverity(headers.circulation, headers.heartbeat,headers.breathing);
+                severityResult = this.checkSeverity(headers.blood_pressure, headers.heartbeat,headers.breathing);
 
                 let newInjured = new Injured({
                     id: injured_id,
                     name:headers.name,
                     age:headers.age,
+                    gender: headers.gender,
                     location: headers.location,
                     airWay: headers.airWay,
                     breathing: headers.breathing,
-                    circulation: headers.circulation,
+                    blood_pressure: headers.blood_pressure,
                     heartbeat:  headers.heartbeat,
                     disability: headers.disability,
                     exposure: headers.exposure,
@@ -300,10 +311,21 @@ getEventById(id) {
         })
     }
 
+    
+
     SetActiveUser(id) {                                     //user.active change to true
         return new Promise((resolve, reject) => {
                 User.update({'id': id}, 
                 {$set:{"active": true}}, (err) => {
+                    if (err) reject (err);
+                });
+        })
+    }
+
+    hospitalGetInjured(id) {                                    //Injured.InHospital  change to true - when hospital get the injured
+        return new Promise((resolve, reject) => {
+                Injured.update({'id': id}, 
+                {$set:{"InHospital": true}}, (err) => {
                     if (err) reject (err);
                 });
         })
@@ -345,6 +367,34 @@ getEventById(id) {
                     "location":headers.location,
                     "time": headers.time,
                     "active": headers.active }}, (err) => {
+                    if (err) reject (err);
+                });
+        })
+    }
+
+    editInjured(InjuredDetails) { 
+    var headers = InjuredDetails;                               //edit injured's personla details by hospital
+        return new Promise((resolve, reject) => {
+                Injured.update({'id': headers.id}, 
+                {$set:{"gender": headers.gender,
+                    "age" : headers.age,
+                    "name":headers.name}}, (err) => {
+                    if (err) reject (err);
+                });
+        })
+    }
+
+    editMedicalDetails(InjuredDetails) { 
+    var headers = JSON.parse(InjuredDetails);                               //edit injured's medical details by paramedic
+        return new Promise((resolve, reject) => {
+                Injured.update({'id': headers.id}, 
+                {$set:{ "airWay"         : headers.airWay,
+                        "breathing"      : headers.breathing,
+                        "blood_pressure" : headers.blood_pressure,
+                        "disability"     : headers.disability,
+                        "exposure"       : headers.exposure,
+                        "heartbeat"      : headers.heartbeat,
+                        "toHospital"     : headers.toHospital}}, (err) => {
                     if (err) reject (err);
                 });
         })
