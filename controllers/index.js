@@ -43,6 +43,16 @@ class Event {
         });
     };
 
+    activeInjuredsByEvent(eventId) {
+        return new Promise((resolve, reject) => {
+            Injured.find({$and:[{InHospital:false},{eventId:eventId}]},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                });
+        });
+    };
+
 
     checkSeverity(blood_pressure, heartbeat,breathing){
         var severity = "OK";
