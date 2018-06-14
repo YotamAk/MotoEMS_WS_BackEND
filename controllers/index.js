@@ -25,7 +25,7 @@ class Event {
 
     login(name ,password) {
         return new Promise((resolve, reject) => {
-            User.findOne({$and:[{name:name},{password:password}]},
+            Hospital.findOne({$and:[{name:name},{password:password}]},
                 (err, result) => {
                     if (err) reject (err);
                     else resolve (result);
