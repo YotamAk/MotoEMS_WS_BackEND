@@ -131,6 +131,7 @@ class Event {
                     toHospital: headers.toHospital,
                     TandT: headers.TandT,
                     severity: severityResult,
+                    treatment: headers.treatment,
                     addBy: headers.addBy,
                     ModifyBy: headers.ModifyBy,
                     QrId: headers.QrId,
@@ -327,6 +328,17 @@ getEventById(id) {
         return new Promise((resolve, reject) => {
                 User.update({'id': id}, 
                 {$set:{"active": true}}, (err) => {
+                    if (err) reject (err);
+                });
+        })
+    }
+
+    SetToHospital(InjuredDetails) { 
+    var headers = InjuredDetails;   
+    // var headers = JSON.parse(InjuredDetails);                                   //when Manager change ToHospital of injured 
+        return new Promise((resolve, reject) => {
+                Injured.update({'id': headers.id}, 
+                {$set:{"toHospital": headers.toHospital}}, (err) => {
                     if (err) reject (err);
                 });
         })

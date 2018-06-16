@@ -327,6 +327,18 @@ app.post('/editEvent/', (req, res, next) => {
     })
 })
 
+
+app.post('/SetToHospital/', (req, res, next) => {
+    data.SetToHospital(
+        req.body.InjuredDetails).then((result) => {
+        result.length === 0 ? next() : res.status(200).json(result);
+        }, (error) => {
+        console.log(error);
+        next();
+        })
+  })
+    
+
     app.post('/hospitalGetInjured/', (req, res, next) => {
     data.hospitalGetInjured(req.body.id).then((result) => {
         result.length === 0 ? next() : res.status(200).json(result);
