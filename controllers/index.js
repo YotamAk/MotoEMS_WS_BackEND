@@ -103,7 +103,7 @@ class Event {
     }
 
     addNewInjured(injuredDetails) {
-        var headers = JSON.parse(injuredDetails), //remove when sending from client side
+        var headers = injuredDetails, //remove when sending from client side
             injured_id = -1,
             severityResult = 0;
         return new Promise((resolve, reject) => {
@@ -318,6 +318,7 @@ getEventById(id) {
                 User.update({'id': id}, 
                 {$set:{"active": false}}, (err) => {
                     if (err) reject (err);
+                    else resolve(` ${id} is inactive`);
                 });
         })
     }
@@ -329,6 +330,7 @@ getEventById(id) {
                 User.update({'id': id}, 
                 {$set:{"active": true}}, (err) => {
                     if (err) reject (err);
+                    else resolve(` ${id} is active`);
                 });
         })
     }
@@ -340,6 +342,7 @@ getEventById(id) {
                 Injured.update({'id': headers.id}, 
                 {$set:{"toHospital": headers.toHospital}}, (err) => {
                     if (err) reject (err);
+                    else resolve(` ${id} is in hospital`);
                 });
         })
     }
@@ -349,6 +352,7 @@ getEventById(id) {
                 Injured.update({'id': id}, 
                 {$set:{"InHospital": true}}, (err) => {
                     if (err) reject (err);
+                    else resolve(` ${id} in hospital`);
                 });
         })
     }
@@ -363,6 +367,7 @@ getEventById(id) {
                     "corpId":headers.corpId,
                     "phone": headers.phone }}, (err) => {
                     if (err) reject (err);
+                    else resolve(`edit ${headers.name}`);
                 });
         })
     }
@@ -376,6 +381,7 @@ getEventById(id) {
                     "location":headers.location,
                     "phone": headers.phone }}, (err) => {
                     if (err) reject (err);
+                    else resolve(`edit ${headers.name}`);
                 });
         })
     }
@@ -390,6 +396,7 @@ getEventById(id) {
                     "time": headers.time,
                     "active": headers.active }}, (err) => {
                     if (err) reject (err);
+                     else resolve(`edit ${headers.description}`);
                 });
         })
     }
@@ -402,6 +409,7 @@ getEventById(id) {
                     "age" : headers.age,
                     "name":headers.name}}, (err) => {
                     if (err) reject (err);
+                    else resolve(`edit ${headers.name}`);
                 });
         })
     }
@@ -418,6 +426,7 @@ getEventById(id) {
                         "heartbeat"      : headers.heartbeat,
                         "toHospital"     : headers.toHospital}}, (err) => {
                     if (err) reject (err);
+                    else resolve(`edit ${headers.id}`);
                 });
         })
     }
