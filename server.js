@@ -212,7 +212,7 @@ app.get('/getAllHospitals/', (req,res,next) => {
 
  app.post('/addNewInjured/', (req, res, next) => {
     data.addNewInjured(
-        req.body.injuredDetails).then((result) => {
+        req.body).then((result) => {
         result.length === 0 ? next() : res.status(200).json(result);
 	console.log("Add New Injured : "+result)
     }, (error) => {
