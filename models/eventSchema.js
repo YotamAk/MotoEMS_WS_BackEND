@@ -8,7 +8,7 @@ var schema = mongoose.Schema,
         description: String,
         createByUserID: String,
         time: { type : Date, default: Date.now },
-        location: [Number],
+        location: { type : String, default: "Shenkar" },
         active: Boolean
     }, {collection: 'EMSevent'});
 

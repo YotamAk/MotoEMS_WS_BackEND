@@ -223,7 +223,7 @@ app.get('/getAllHospitals/', (req,res,next) => {
 
   app.post('/addNewEvent/', (req, res, next) => {
     data.addNewEvent(
-        req.body.EventDetails).then((result) => {
+        req.body).then((result) => {
         result.length === 0 ? next() : res.status(200).json(result);
         }, (error) => {
         console.log(error);

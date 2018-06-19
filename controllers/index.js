@@ -150,7 +150,7 @@ class Event {
 
 
     addNewEvent(EventDetails) {
-        var headers = JSON.parse(EventDetails), //remove when sending from client side
+        var headers = EventDetails,
             EMSevent_id = -1;
 
         return new Promise((resolve, reject) => {
