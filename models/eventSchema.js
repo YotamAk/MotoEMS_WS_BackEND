@@ -5,11 +5,10 @@ var schema = mongoose.Schema,
     
     EventSchema = new schema({
         id: {type:String, required:true},
-        description: String,
+        EventDescription: String,
         createByUserID: String,
-        time: { type : Date, default: Date.now },
-        location: { type : String, default: "Shenkar" },
-        active: Boolean
+        EventTime: { type : Date, default: Date.now },
+        location: { type : String, default: "Shenkar" }
     }, {collection: 'EMSevent'});
 
 var EMSevent = mongoose.model('EMSevent', EventSchema);

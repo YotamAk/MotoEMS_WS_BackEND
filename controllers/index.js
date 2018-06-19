@@ -164,16 +164,15 @@ class Event {
             
                 let newEvent = new EMSevent({
                     id: EMSevent_id,
-                    description:headers.description,
+                    EventDescription:headers.EventDescription,
                     createByUserID: headers.createByUserID,
-                    location: headers.location,
-                    active: true
+                    location: headers.location
                 });
 
                 newEvent.save(
                     (err) => {
                         if (err) resolve("ERROR in injured insertion, ",err);
-                        // else resolve(`Entered as SourceID  the following documenet: `);
+                        else resolve(`New Event was created ${EMSevent_id} `)
                     })
             })
         })
@@ -342,7 +341,7 @@ getEventById(id) {
                 Injured.update({'id': headers.id}, 
                 {$set:{"toHospital": headers.toHospital}}, (err) => {
                     if (err) reject (err);
-                    else resolve(` ${id} is in hospital`);
+                    else resolve(`is in hospital`);
                 });
         })
     }
@@ -390,11 +389,10 @@ getEventById(id) {
     var headers = EventDetails;                               
         return new Promise((resolve, reject) => {
                 EMSevent.update({'id': headers.id}, 
-                {$set:{"description": headers.description,
+                {$set:{"EventDescription": headers.EventDescription,
                     "createByUserID" : headers.createByUserID,
                     "location":headers.location,
-                    "time": headers.time,
-                    "active": headers.active }}, (err) => {
+                    "EventTime": headers.EventTime}}, (err) => {
                     if (err) reject (err);
                      else resolve(`edit ${headers.description}`);
                 });
