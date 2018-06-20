@@ -21,10 +21,7 @@ var schema = mongoose.Schema,
         toHospital  :   { type : String, default: "Unknown" },
         TandT       :   Boolean,
         time        :   { type : Date, default: Date.now },
-        severity:{ 
-            type: String,
-            enum: ['dead', 'critical','urgent-stable','urgent','not-urgent','OK']
-        },
+        severity    : String,
         treatment   : String,
         addBy       : String,
         ModifyBy    : String,

@@ -56,7 +56,7 @@ class Event {
 
     checkSeverity(blood_pressure, heartbeat,breathing){
         var severity = "OK";
-        if((heartbeat> 130 || heartbeat< 50) && blood_pressure === "high" ){
+        if(heartbeat> 100 || heartbeat< 60){
             severity ="urgent-stable"; 
         }
         return severity;
@@ -103,9 +103,9 @@ class Event {
     }
 
     addNewInjured(injuredDetails) {
-        var headers = injuredDetails, //remove when sending from client side
-            injured_id = -1,
-            severityResult = 0;
+        var headers = injuredDetails,
+            injured_id = -1;
+            // severityResult = 0;
         return new Promise((resolve, reject) => {
             this.getIncrements().then((result) => {
                 injured_id = result.injured_id;
@@ -114,7 +114,7 @@ class Event {
                  Increment.update({$inc:{'injured_id': 1}}, (err) =>{
                     if (err) console.log(err)
                  });  
-                severityResult = this.checkSeverity(headers.blood_pressure, headers.heartbeat,headers.breathing);
+                // not used- severityResult = this.checkSeverity(headers.blood_pressure, headers.heartbeat,headers.breathing);
 
                 let newInjured = new Injured({
                     id: injured_id,
@@ -130,7 +130,7 @@ class Event {
                     exposure: headers.exposure,
                     toHospital: headers.toHospital,
                     TandT: headers.TandT,
-                    severity: severityResult,
+                    severity: headers.severity,
                     treatment: headers.treatment,
                     addBy: headers.addBy,
                     ModifyBy: headers.ModifyBy,
