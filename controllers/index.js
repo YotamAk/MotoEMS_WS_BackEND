@@ -141,7 +141,7 @@ class Event {
 
                 newInjured.save(
                     (err) => {
-                        if (err) resolve("ERROR in injured insertion, ",err);
+                        if (err) reject("ERROR in injured insertion, ",err);
                         else resolve(`Entered as ${newInjured.name}`);
                 })
             })
@@ -171,8 +171,8 @@ class Event {
 
                 newEvent.save(
                     (err) => {
-                        if (err) resolve("ERROR in injured insertion, ",err);
-                        else resolve(`New Event was created ${EMSevent_id} `)
+                        if (err) reject("ERROR in injured insertion, ",err);
+                        else resolve(` ${EMSevent_id} `)
                     })
             })
         })
@@ -202,7 +202,7 @@ class Event {
 
                 newUser.save(
                     (err) => {
-                        if (err) resolve("ERROR in User insertion, ",err);
+                        if (err) reject("ERROR in User insertion, ",err);
                         else resolve(`Entered ${newUser.name} `);
                     })
             })
@@ -233,7 +233,7 @@ class Event {
 
                 newHospital.save(
                     (err) => {
-                        if (err) resolve("ERROR in User insertion, ",err);
+                        if (err) reject("ERROR in User insertion, ",err);
                         else resolve(`Entered ${newHospital.name} `);
                     })
             })
@@ -312,6 +312,17 @@ getEventById(id) {
         });
     };
 
+    InjuredsByHospital(toHospital) {
+        return new Promise((resolve, reject) => {
+            Injured.find({toHospital: toHospital},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                    console.log(result);
+                });
+        });
+    };
+
     SetInactiveUser(id) {                                    //user.active change to false
         return new Promise((resolve, reject) => {
                 User.update({'id': id}, 
@@ -366,7 +377,7 @@ getEventById(id) {
                     "corpId":headers.corpId,
                     "phone": headers.phone }}, (err) => {
                     if (err) reject (err);
-                    else resolve(`edit ${headers.name}`);
+                    else resolve(`${headers.id}`);
                 });
         })
     }
@@ -380,7 +391,7 @@ getEventById(id) {
                     "location":headers.location,
                     "phone": headers.phone }}, (err) => {
                     if (err) reject (err);
-                    else resolve(`edit ${headers.name}`);
+                    else resolve(` ${headers.name}`);
                 });
         })
     }
@@ -394,7 +405,7 @@ getEventById(id) {
                     "location":headers.location,
                     "EventTime": headers.EventTime}}, (err) => {
                     if (err) reject (err);
-                     else resolve(`edit ${headers.description}`);
+                     else resolve(`edit ${headers.id}`);
                 });
         })
     }
@@ -407,7 +418,7 @@ getEventById(id) {
                     "age" : headers.age,
                     "name":headers.name}}, (err) => {
                     if (err) reject (err);
-                    else resolve(`edit ${headers.name}`);
+                    else resolve(` ${headers.id}`);
                 });
         })
     }

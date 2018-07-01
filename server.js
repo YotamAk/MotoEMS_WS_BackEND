@@ -50,7 +50,7 @@ const express = require('express'),
  app.get('/getInjuredByQR/:QrId', (req,res,next) => {
     data.getInjuredByQR(req.params.QrId).then((result) => {
         res.status(200).json(result);    
-  console.log("Get injured by QR : " + req.params.id);
+  console.log("Get injured by QR : " + req.params.QrId);
     }, (error) => {
         console.log(error);
         next();
@@ -173,6 +173,16 @@ const express = require('express'),
     })
   })
 
+  app.get('/InjuredsByHospital/:toHospital', (req,res,next) => {
+    data.InjuredsByHospital(req.params.toHospital).then((result) => {
+        res.status(200).json(result);
+  console.log("Get Injureds By Hospital : " + req.params.toHospital );    
+    }, (error) => {
+        console.log(error);
+        next();
+    })
+  })
+
  app.get('/getAllUsers/', (req,res,next) => {
     data.getAllUsers().then((result) => {
         res.status(200).send(result);    
@@ -225,6 +235,7 @@ app.get('/getAllHospitals/', (req,res,next) => {
     data.addNewEvent(
         req.body).then((result) => {
         result.length === 0 ? next() : res.status(200).json(result);
+        console.log("add new event : "+result)
         }, (error) => {
         console.log(error);
         next();
@@ -235,6 +246,7 @@ app.post('/editUser/', (req, res, next) => {
     data.editUser(
         req.body.UserDetails).then((result) => {
         result.length === 0 ? next() : res.status(200).json(result);
+        console.log("Edit User ID : "+result)
         }, (error) => {
         console.log(error);
         next();
@@ -245,6 +257,7 @@ app.post('/editHospital/', (req, res, next) => {
     data.editHospital(
         req.body.HospitalDetails).then((result) => {
         result.length === 0 ? next() : res.status(200).json(result);
+        console.log("Edit Hospital : "+result)
         }, (error) => {
         console.log(error);
         next();
@@ -255,6 +268,7 @@ app.post('/editEvent/', (req, res, next) => {
     data.editEvent(
         req.body.EventDetails).then((result) => {
         result.length === 0 ? next() : res.status(200).json(result);
+        console.log("Edit Event : "+result)
         }, (error) => {
         console.log(error);
         next();
@@ -265,6 +279,7 @@ app.post('/editEvent/', (req, res, next) => {
     data.editInjured(
         req.body.InjuredDetails).then((result) => {
         result.length === 0 ? next() : res.status(200).json(result);
+        console.log("Edit Injured : "+result)
         }, (error) => {
         console.log(error);
         next();
