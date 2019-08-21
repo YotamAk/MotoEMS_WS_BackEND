@@ -22,38 +22,7 @@ class Event {
         })
     }
 
-
-    login(name ,password) {
-        return new Promise((resolve, reject) => {
-            Hospital.findOne({$and:[{name:name},{password:password}]},
-                (err, result) => {
-                    if (err) reject (err);
-                    else resolve (result);
-                });
-        });
-    };
-
-    activeInjuredsByHospital(toHospital) {
-        return new Promise((resolve, reject) => {
-            Injured.find({$and:[{InHospital:false},{toHospital:toHospital}]},
-                (err, result) => {
-                    if (err) reject (err);
-                    else resolve (result);
-                });
-        });
-    };
-
-    activeInjuredsByEvent(eventId) {
-        return new Promise((resolve, reject) => {
-            Injured.find({$and:[{InHospital:false},{eventId:eventId}]},
-                (err, result) => {
-                    if (err) reject (err);
-                    else resolve (result);
-                });
-        });
-    };
-
-
+    // check the severity of injured by injured data
     checkSeverity(blood_pressure, heartbeat,breathing){
         var severity = "OK";
         if(heartbeat> 100 || heartbeat< 60){
@@ -66,6 +35,40 @@ class Event {
     /**
      * The following methods are called by routes only from the server.js file
      */
+
+    // Login function get hospital name and password and return hospital data from DB
+    login(name ,password) {
+        return new Promise((resolve, reject) => {
+            Hospital.findOne({$and:[{name:name},{password:password}]},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                });
+        });
+    };
+
+    //used by hospital desktop, return all the injureds do not admietted in this hospital yet
+    activeInjuredsByHospital(toHospital) {
+        return new Promise((resolve, reject) => {
+            Injured.find({$and:[{InHospital:false},{toHospital:toHospital}]},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                });
+        });
+    };
+    //used by event manager , return all injureds are still not in the way to hospital
+    activeInjuredsByEvent(eventId) {
+        return new Promise((resolve, reject) => {
+            Injured.find({$and:[{InHospital:false},{eventId:eventId}]},
+                (err, result) => {
+                    if (err) reject (err);
+                    else resolve (result);
+                });
+        });
+    };
+
+
     getAllUsers() {
         return new Promise((resolve, reject) => {
             User.find({}, '-_id', (err, result) => {
@@ -101,7 +104,7 @@ class Event {
             })
         })    
     }
-
+    //get Data from motorola smartphone and add injured to DB
     addNewInjured(injuredDetails) {
         var headers = injuredDetails,
             injured_id = -1;
@@ -290,7 +293,7 @@ getEventById(id) {
         });
     };
 
-
+    // return injureds by severity
     getInjuredsSeverity(severity) {
         return new Promise((resolve, reject) => {
             Injured.find({severity: severity},
@@ -301,6 +304,7 @@ getEventById(id) {
         });
     };
 
+    //return all injureds of specific event
     getInjuredsByEvent(eventId) {
         return new Promise((resolve, reject) => {
             Injured.find({eventId: eventId},
@@ -323,7 +327,8 @@ getEventById(id) {
         });
     };
 
-    SetInactiveUser(id) {                                    //user.active change to false
+    //user.active change to false 
+    SetInactiveUser(id) {                                    
         return new Promise((resolve, reject) => {
                 User.update({'id': id}, 
                 {$set:{"active": false}}, (err) => {
@@ -334,8 +339,8 @@ getEventById(id) {
     }
 
     
-
-    SetActiveUser(id) {                                     //user.active change to true
+    //user.active change to true
+    SetActiveUser(id) {                                     
         return new Promise((resolve, reject) => {
                 User.update({'id': id}, 
                 {$set:{"active": true}}, (err) => {
@@ -345,9 +350,10 @@ getEventById(id) {
         })
     }
 
+     //when event Manager change ToHospital of injured - send him to hospital 
     SetToHospital(InjuredDetails) { 
     var headers = InjuredDetails;   
-    // var headers = JSON.parse(InjuredDetails);                                   //when Manager change ToHospital of injured 
+    // var headers = JSON.parse(InjuredDetails);                                  
         return new Promise((resolve, reject) => {
                 Injured.update({'id': headers.id}, 
                 {$set:{"toHospital": headers.toHospital}}, (err) => {
@@ -357,7 +363,8 @@ getEventById(id) {
         })
     }
 
-    hospitalGetInjured(id) {                                    //Injured.InHospital  change to true - when hospital get the injured
+     //Injured.InHospital  change to true - when hospital receive the injured
+    hospitalGetInjured(id) {                                   
         return new Promise((resolve, reject) => {
                 Injured.update({'id': id}, 
                 {$set:{"InHospital": true}}, (err) => {
@@ -367,6 +374,7 @@ getEventById(id) {
         })
     }
 
+    //get updated user details and update by user id
     editUser(UserDetails) { 
     var headers = UserDetails;                               
         return new Promise((resolve, reject) => {
@@ -410,8 +418,9 @@ getEventById(id) {
         })
     }
 
+    //edit injured's personla details by hospital
     editInjured(InjuredDetails) { 
-    var headers = InjuredDetails;                               //edit injured's personla details by hospital
+    var headers = InjuredDetails;                               
         return new Promise((resolve, reject) => {
                 Injured.update({'id': headers.id}, 
                 {$set:{"gender": headers.gender,
@@ -423,8 +432,9 @@ getEventById(id) {
         })
     }
 
+     //edit injured's medical details by paramedic
     editMedicalDetails(InjuredDetails) { 
-    var headers = JSON.parse(InjuredDetails);                               //edit injured's medical details by paramedic
+    var headers = JSON.parse(InjuredDetails);                              
         return new Promise((resolve, reject) => {
                 Injured.update({'id': headers.id}, 
                 {$set:{ "airWay"         : headers.airWay,
@@ -440,6 +450,7 @@ getEventById(id) {
         })
     }
 
+    //Dashboard - get all the injured do not hospitalize yet
     notHospitalInjureds() {
         return new Promise((resolve, reject) => {
             Injured.find({InHospital: false},
